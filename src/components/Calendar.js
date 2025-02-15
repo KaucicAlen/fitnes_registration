@@ -17,7 +17,7 @@ const Calendar = ({ token }) => {
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await axios.get("fitnesregistration-production.up.railway.app/getReservations", {
+                const response = await axios.get("https://fitnesregistration-production.up.railway.app/getReservations", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -37,7 +37,7 @@ const Calendar = ({ token }) => {
     const handleReserve = async (day, hour) => {
         try {
             const response = await axios.post(
-                "fitnesregistration-production.up.railway.app/reserve",
+                "https://fitnesregistration-production.up.railway.app/reserve",
                 { day, hour },
                 {
                     headers: {
@@ -62,7 +62,7 @@ const Calendar = ({ token }) => {
     const handleRemove = async (day, hour) => {
         try {
             const response = await axios.delete(
-                `fitnesregistration-production.up.railway.app/removeReservation/${day}/${hour}`,
+                `https://fitnesregistration-production.up.railway.app/removeReservation/${day}/${hour}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }

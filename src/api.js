@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'fitnesregistration-production.up.railway.app', // Adjust this if needed
+  baseURL: 'https://fitnesregistration-production.up.railway.app', // Adjust this if needed
 });
 
 export default API;

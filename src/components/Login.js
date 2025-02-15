@@ -12,7 +12,7 @@ const Login = ({ setToken, setUsername }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("fitnesregistration-production.up.railway.app/login", {
+      const response = await axios.post("https://fitnesregistration-production.up.railway.app/login", {
         username,
         password,
       });
