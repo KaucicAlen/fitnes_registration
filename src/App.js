@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <div className="container">
-        <Header token={token} username={username} />
+        <Header token={token} username={username} setToken={setToken} setUsername={setUsername} />
 
         <Routes>
           <Route path="/register" element={<Register />} />

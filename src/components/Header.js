@@ -1,9 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Header = ({ token, username }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [username, setUsername] = useState(localStorage.getItem("username"));
+const Header = ({ token, username, setToken, setUsername }) => {
+  
 
   const navigate = useNavigate();
 
