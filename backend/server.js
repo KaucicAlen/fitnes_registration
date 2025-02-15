@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");  // Using argon2 for password hashing
