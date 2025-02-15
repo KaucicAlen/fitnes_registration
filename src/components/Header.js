@@ -12,8 +12,6 @@ const Header = ({ token, username, setToken, setUsername }) => {
     // Redirect to login page
     navigate("/login");
     
-    // Refresh the page
-    window.location.reload();
 };
 
   return (
