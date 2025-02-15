@@ -66,7 +66,7 @@ app.post("/login", async (req, res) => {
 
     db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
         if (err) return res.status(500).json({ error: err });
-        if (results.length === 0) return res.status(400).json({ message: "User not found" });
+        if (results.length === 0) return res.status(400).json({ message: "Uporabnik ne obstaja" });
 
         const user = results[0];
 
@@ -74,13 +74,13 @@ app.post("/login", async (req, res) => {
             // Compare the password with the hashed one using argon2
             const isValid = await argon2.verify(user.password, password);
             if (!isValid) {
-                return res.status(401).json({ message: "Incorrect password" });
+                return res.status(401).json({ message: "Napačno geslo" });
             }
 
             const token = jwt.sign({ id: user.id, username: user.username }, "secret", { expiresIn: "1h" });
             res.json({ token });
         } catch (err) {
-            return res.status(500).json({ message: "Error verifying password" });
+            return res.status(500).json({ message: "Napaka pri preverjanju gesla, poskusite pozneje" });
         }
     });
 });
@@ -107,17 +107,17 @@ app.post("/reserve", verifyToken, (req, res) => {
     db.query("SELECT * FROM reservations WHERE day = ? AND hour = ?", [day, hour], (err, results) => {
         if (err) return res.status(500).json({ message: "Database error" });
         if (results.length > 0) {
-            return res.status(400).json({ message: "This time block is already reserved." });
+            return res.status(400).json({ message: "Ta ura je ze zasedena." });
         }
 
         // Insert reservation into the database
         db.query("INSERT INTO reservations (day, hour, user_id) VALUES (?, ?, ?)", [day, hour, userId], (err, result) => {
-            if (err) return res.status(500).json({ message: "Error reserving block" });
+            if (err) return res.status(500).json({ message: "Problem pri rezervaciji, poskusite pozneje." });
 
             // Fetch username to return to frontend
             db.query("SELECT username FROM users WHERE id = ?", [userId], (err, userResult) => {
                 if (err) return res.status(500).json({ message: "Error fetching user info" });
-                res.json({ message: "Reservation successful", username: userResult[0].username });
+                res.json({ message: "Rezervacoka uspesna!", username: userResult[0].username });
             });
         });
     });
@@ -134,15 +134,15 @@ app.delete("/removeReservation/:day/:hour", verifyToken, (req, res) => {
         if (err) return res.status(500).json({ message: "Error checking reservation" });
 
         if (results.length === 0) {
-            return res.status(403).json({ message: "You can only remove your own reservations" });
+            return res.status(403).json({ message: "Preklices lahko samo svoje rezervacije." });
         }
 
         // Delete the reservation
         const deleteQuery = "DELETE FROM reservations WHERE day = ? AND hour = ? AND user_id = ?";
         db.query(deleteQuery, [day, hour, userId], (err) => {
-            if (err) return res.status(500).json({ message: "Error removing reservation" });
+            if (err) return res.status(500).json({ message: "Problem pri brisanju rezervacije, poskusite pozneje." });
 
-            res.json({ message: "Reservation removed successfully" });
+            res.json({ message: "Rezervacija uspesno preklicana." });
         });
     });
 });
