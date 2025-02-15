@@ -9,11 +9,17 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [username, setUsername] = useState(localStorage.getItem("username"));
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setToken(null); // Clear the token in state
+    setUsername(null); // Clear the username in state
+  };
 
   return (
     <Router>
       <div className="container">
-        <Header token={token} username={username} />
+        <Header token={token} username={username} handleLogout={handleLogout} />
 
         <Routes>
           <Route path="/register" element={<Register />} />

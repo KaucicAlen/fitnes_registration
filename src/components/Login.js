@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,6 +7,13 @@ const Login = ({ setToken, setUsername }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Check if user is already logged in by checking localStorage
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/calendar");
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,8 +27,12 @@ const Login = ({ setToken, setUsername }) => {
       const { token } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("username", username);
+
+      // Update the state for the parent component
       setToken(token);
       setUsername(username);
+
+      // Redirect to calendar page after successful login
       navigate("/calendar");
     } catch (err) {
       setError("Invalid username or password.");

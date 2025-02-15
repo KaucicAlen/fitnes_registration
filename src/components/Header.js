@@ -1,36 +1,22 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Header = ({ token, username, setToken, setUsername }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // Clear token and username from localStorage
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    
-    // Redirect to login page
-    navigate("/login");
-    
-};
-
+const Header = ({ token, username, handleLogout }) => {
   return (
-    <header className="header">
-      <div className="logo">
-        <Link to="/">Fitnes soba</Link>
-      </div>
-      <div className="user-info">
+    <header>
+      <h1>Fitness Reservation</h1>
+      <nav>
         {token ? (
           <>
-            <span>Pozdravljen/a, {username}! </span>
-            <button className="logout-button" onClick={handleLogout}>Odjavi se!</button>
+            <span>Welcome, {username}</span>
+            <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
-          <span>
-            <Link to="/login">Prijava</Link> | <Link to="/register">Registracija</Link>
-          </span>
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
         )}
-      </div>
+      </nav>
     </header>
   );
 };
