@@ -2,13 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
-const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-
+const argon2 = require("argon2");  // Using argon2 for password hashing
 const app = express();
 app.use(express.json());
 app.use(cors());
-require("dotenv").config(); 
 
 const db = mysql.createConnection({
     host: process.env.MYSQLHOST,
@@ -30,7 +28,6 @@ app.get("/", (req, res) => {
     res.send("Server is running");
 });
 
-
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
     const token = req.headers["authorization"]?.split(" ")[1];
@@ -48,34 +45,45 @@ const verifyToken = (req, res, next) => {
 };
 
 // User registration
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
     const { username, password } = req.body;
-    const hash = bcrypt.hashSync(password, 10);
+    try {
+        // Hash the password using argon2
+        const hash = await argon2.hash(password);
 
-    db.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash], (err, result) => {
-        if (err) return res.status(500).json({ error: err });
-        res.json({ message: "User registered" });
-    });
+        db.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hash], (err, result) => {
+            if (err) return res.status(500).json({ error: err });
+            res.json({ message: "User registered" });
+        });
+    } catch (err) {
+        return res.status(500).json({ error: "Error hashing password" });
+    }
 });
 
 // User login
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
-    db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
+    db.query("SELECT * FROM users WHERE username = ?", [username], async (err, results) => {
         if (err) return res.status(500).json({ error: err });
         if (results.length === 0) return res.status(400).json({ message: "User not found" });
 
         const user = results[0];
-        if (!bcrypt.compareSync(password, user.password)) {
-            return res.status(401).json({ message: "Incorrect password" });
-        }
 
-        const token = jwt.sign({ id: user.id, username: user.username }, "secret", { expiresIn: "1h" });
-        res.json({ token });
+        try {
+            // Compare the password with the hashed one using argon2
+            const isValid = await argon2.verify(user.password, password);
+            if (!isValid) {
+                return res.status(401).json({ message: "Incorrect password" });
+            }
+
+            const token = jwt.sign({ id: user.id, username: user.username }, "secret", { expiresIn: "1h" });
+            res.json({ token });
+        } catch (err) {
+            return res.status(500).json({ message: "Error verifying password" });
+        }
     });
 });
-
 
 // Get all reservations for the logged-in user
 app.get("/reservations", verifyToken, (req, res) => {
@@ -156,8 +164,6 @@ app.get("/getReservations", verifyToken, (req, res) => {
         res.json(results); // Send reservation data with usernames
     });
 });
-
-
 
 // Start server
 app.listen(5001, () => {
