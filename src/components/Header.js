@@ -1,22 +1,25 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Header = ({ token, username, handleLogout }) => {
+  
   return (
-    <header>
-      <h1>Fitness Reservation</h1>
-      <nav>
+    <header className="header">
+      <div className="logo">
+        <Link to="/">Fitnes soba</Link>
+      </div>
+      <div className="user-info">
         {token ? (
           <>
-            <span>Welcome, {username}</span>
-            <button onClick={handleLogout}>Logout</button>
+            <span>Pozdravljen/a, {username}! </span>
+            <button className="logout-button" onClick={handleLogout}>Odjavi se!</button>
           </>
         ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
+          <span>
+            <Link to="/login">Prijava</Link> | <Link to="/register">Registracija</Link>
+          </span>
         )}
-      </nav>
+      </div>
     </header>
   );
 };
