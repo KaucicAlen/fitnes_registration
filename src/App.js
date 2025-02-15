@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <div className="container">
-        <Header token={token} username={username} handleLogout={handleLogout} />
+        <Header token={token} username={username} />
 
         <Routes>
           <Route path="/register" element={<Register />} />
