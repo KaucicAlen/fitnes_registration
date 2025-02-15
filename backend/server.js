@@ -117,7 +117,7 @@ app.post("/reserve", verifyToken, (req, res) => {
             // Fetch username to return to frontend
             db.query("SELECT username FROM users WHERE id = ?", [userId], (err, userResult) => {
                 if (err) return res.status(500).json({ message: "Error fetching user info" });
-                res.json({ message: "Rezervacoka uspesna!", username: userResult[0].username });
+                res.json({ message: "Rezervacija termina uspesna!", username: userResult[0].username });
             });
         });
     });
