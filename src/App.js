@@ -28,7 +28,7 @@ const App = () => {
           <Route path="/login" element={<Login setToken={setToken} setUsername={setUsername} />} />
           <Route path="/calendar" element={<Calendar token={token} />} />
           <Route path="/" element={<Login setToken={setToken} setUsername={setUsername} />} />
-          <Route path="*" element={<Login setToken={setToken} setUsername={setUsername} />} />
+          <Route path="404" element={<Login setToken={setToken} setUsername={setUsername} />} />
 
         </Routes>
       </div>
