@@ -26,6 +26,10 @@ db.connect((err) => {
     console.log("Connected to the database.");
 });
 
+app.get("/", (req, res) => {
+    res.send("Server is running");
+});
+
 
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
