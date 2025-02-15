@@ -41,7 +41,7 @@ const Login = ({ setToken, setUsername }) => {
 
   return (
     <div className="login-container">
-      <h2>Prijavi se</h2>
+      <h1>Prijavi se</h1>
       <form onSubmit={handleLogin}>
         <input
           type="text"

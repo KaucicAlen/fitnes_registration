@@ -19,7 +19,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <h1>Registriraj se</h1>
       <form onSubmit={handleSubmit}>
         <input
