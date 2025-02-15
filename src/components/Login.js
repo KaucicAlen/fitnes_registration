@@ -12,7 +12,7 @@ const Login = ({ setToken, setUsername }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://192.168.1.173:5001/login", {
+      const response = await axios.post("fitnesregistration-production.up.railway.app/login", {
         username,
         password,
       });
