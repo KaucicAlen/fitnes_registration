@@ -27,11 +27,6 @@ db.connect((err) => {
 });
 
 
-db.connect((err) => {
-    if (err) throw err;
-    console.log("MySQL Connected...");
-});
-
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
     const token = req.headers["authorization"]?.split(" ")[1];
