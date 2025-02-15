@@ -2,15 +2,17 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({ token, username }) => {
-  
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [username, setUsername] = useState(localStorage.getItem("username"));
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    setToken(null); 
-    setUsername(null); 
-    navigate("/login"); 
+    setToken(null);
+    setUsername(null);
+    navigate("/login");
   };
   return (
     <header className="header">
