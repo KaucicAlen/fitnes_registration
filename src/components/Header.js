@@ -1,8 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({ token, username, handleLogout }) => {
   
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setToken(null); 
+    setUsername(null); 
+    navigate("/login"); 
+  };
   return (
     <header className="header">
       <div className="logo">
