@@ -12,6 +12,7 @@ body {
   background-color: #f4f4f9;
   color: #333;
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 h1, h2 {
@@ -60,22 +61,24 @@ form {
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
+  max-width: 1200px; /* Prevent content from becoming too stretched on large screens */
 }
 
 /* General styles for calendar layout */
 .calendar {
-    padding: 20px;
+  padding: 20px;
+  width: 100%;
 }
 
 /* Days header row - horizontal layout */
 .days-header {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns for each day */
-    gap: 10px;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for each day */
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .day-header {
@@ -96,59 +99,57 @@ form {
   transform: scale(1.02);
 }
 
-
 /* Grid for reservation hours below the days header */
 .reservation-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns for each day */
-    gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for each day */
+  gap: 10px;
 }
 
 .hour-row {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .hour-block {
-    background-color: #28a745; /* Green by default for free slots */
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    flex-grow: 1;
-    margin: 2px;
+  background-color: #28a745; /* Green by default for free slots */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex-grow: 1;
+  margin: 2px;
 }
 
 .hour-block.reserved {
-    background-color: #dc3545; /* Red for reserved slots */
+  background-color: #dc3545; /* Red for reserved slots */
 }
 
 .hour-block .reserved-by {
-    margin-top: 5px;
-    font-size: 0.9rem;
-    color: #f8f9fa;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #f8f9fa;
 }
 
 .hour-block:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 .your-reservation {
-    background-color: #4da6ff !important; /* Blue for your reservations */
-    color: white;
+  background-color: #4da6ff !important; /* Blue for your reservations */
+  color: white;
 }
 
 .hour-block.reserved:hover {
-    background-color: #c82333;
+  background-color: #c82333;
 }
 
 /* Style for day headers when clicked */
 .day-header:hover {
-    background-color: #81b9f5;
+  background-color: #81b9f5;
 }
-
 
 /* Navigation button styles */
 .nav-button {
@@ -174,12 +175,26 @@ form {
   background-color: #333;
   color: white;
   padding: 10px 20px;
+  flex-wrap: wrap; /* Ensure header doesn't overflow on mobile */
 }
 
 .header .logo a {
   color: white;
   font-size: 1.5rem;
   text-decoration: none;
+  flex: 1 1 auto;
+}
+
+.header .user-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 1rem;
+}
+
+.header .user-info span {
+  font-size: 1rem;
 }
 
 .header .user-info a {
@@ -188,12 +203,14 @@ form {
   margin-left: 10px;
 }
 
-.header .user-info span {
-  font-size: 1rem;
-}
-
 .header .user-info a:hover {
   text-decoration: underline;
+}
+
+.header .logout-button {
+  margin-left: 10px;
+  padding: 8px 15px;
+  font-size: 0.9rem;
 }
 
 .header .user-info {
@@ -202,12 +219,35 @@ form {
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
+  .container {
+    width: 95%;
+  }
+
   .week-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
   .reservation-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .header {
+    padding: 10px 15px;
+  }
+
+  .header .logo a {
+    font-size: 1.2rem;
+    flex-basis: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .header .user-info {
+    justify-content: center;
+  }
+
+  .header .logout-button {
+    margin-left: 0;
   }
 }
 
@@ -218,5 +258,13 @@ form {
 
   .reservation-grid {
     grid-template-columns: 1fr;
+  }
+
+  .header .logo a {
+    font-size: 1.3rem;
+  }
+
+  .header .user-info {
+    font-size: 1rem;
   }
 }
