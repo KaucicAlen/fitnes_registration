@@ -3,7 +3,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const argon2 = require("argon2");  // Using argon2 for password hashing
+const argon2 = require("argon2"); 
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -13,8 +13,17 @@ const db = mysql.createConnection({
     user: process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
-    port: process.env.MYSQLPORT
+    port: process.env.MYSQLPORT,
+    reconnnect: true,
 });
+
+db.on("error", (err) => {
+    console.error("Database Error:", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      console.log("Reconnecting to database...");
+      db.connect();
+    }
+  });
 
 db.connect((err) => {
     if (err) {
