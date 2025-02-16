@@ -46,7 +46,7 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, "secret", (err, decoded) => {
         if (err) {
-            return res.status(401).json({ message: "Invalid or expired token" });
+            return res.status(401).json({ message: "Vasa seja je potekla, prosim da se ponovno prijavite." });
         }
         req.user = decoded; // Save the decoded user info for later use
         next();
