@@ -37,6 +37,13 @@ app.get("/", (req, res) => {
     res.send("Server is running");
 });
 
+
+setInterval(() => {
+    db.query("SELECT 1", (err) => {
+      if (err) console.error("Keep-alive query failed:", err);
+    });
+  }, 5 * 60 * 1000); // Every 5 minutes
+
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
     const token = req.headers["authorization"]?.split(" ")[1];
