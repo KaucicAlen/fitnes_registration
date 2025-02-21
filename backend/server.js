@@ -8,14 +8,17 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
     host: process.env.MYSQLHOST,
     user: process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
     port: process.env.MYSQLPORT,
-    reconnnect: true,
+    waitForConnections: true,
+    connectionLimit: 10, 
+    queueLimit: 0,
 });
+
 
 db.on("error", (err) => {
     console.error("Database Error:", err);
@@ -25,24 +28,10 @@ db.on("error", (err) => {
     }
   });
 
-db.connect((err) => {
-    if (err) {
-        console.error("Database connection failed: " + err.stack);
-        return;
-    }
-    console.log("Connected to the database.");
-});
 
 app.get("/", (req, res) => {
     res.send("Server is running");
 });
-
-
-setInterval(() => {
-    db.query("SELECT 1", (err) => {
-      if (err) console.error("Keep-alive query failed:", err);
-    });
-  }, 5 * 60 * 1000); // Every 5 minutes
 
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
