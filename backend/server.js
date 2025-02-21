@@ -20,15 +20,6 @@ const db = mysql.createPool({
 });
 
 
-db.on("error", (err) => {
-    console.error("Database Error:", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
-      console.log("Reconnecting to database...");
-      db.connect();
-    }
-  });
-
-
 app.get("/", (req, res) => {
     res.send("Server is running");
 });
